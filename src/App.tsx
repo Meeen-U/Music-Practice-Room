@@ -26,6 +26,7 @@ function Metronome() {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   const [sessionTime, setSessionTime] = useState(0); 
+  sessionTime;
   const [todayTotal, setTodayTotal] = useState(0); 
   const [hasCelebrated, setHasCelebrated] = useState(false); 
   
@@ -144,6 +145,7 @@ function Metronome() {
   }, [bpm, playClick]);
 
   const [tick, setTick] = useState(0);
+  tick;
   useEffect(() => {
     if (isPlaying) {
       const id = setInterval(() => {

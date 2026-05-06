@@ -9,7 +9,7 @@ type DailyRecord = {
 
 function CalendarPage() {
   const navigate = useNavigate();
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth] = useState(new Date());
   const [practiceData, setPracticeData] = useState<Record<string, DailyRecord>>({});
 
   useEffect(() => {
