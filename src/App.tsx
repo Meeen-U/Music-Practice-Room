@@ -122,16 +122,26 @@ function Metronome() {
 
   const playClick = useCallback((beat: number) => {
     if (!audioCtxRef.current) return; 
+
+    const now = audioCtxRef.current.currentTime;
     const osc = audioCtxRef.current.createOscillator();
     const gainNode = audioCtxRef.current.createGain();
+
     osc.connect(gainNode);
     gainNode.connect(audioCtxRef.current.destination);
     
-    osc.frequency.value = beat === 0 ? 1500 : 1000; 
-    gainNode.gain.setValueAtTime(0.5, audioCtxRef.current.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtxRef.current.currentTime + 0.1);
-    osc.start(nextNoteTimeRef.current);
-    osc.stop(nextNoteTimeRef.current + 0.1);
+    const isFirstBeat = beat === 0;
+    osc.frequency.setValueAtTime(isFirstBeat ? 1500 : 1000, now); 
+    gainNode.gain.setValueAtTime(0.5, now);
+    gainNode.gain.linearRampToValueAtTime(0, now + 0.1);
+
+    osc.start(now);
+    osc.stop(now + 0.12);
+
+    osc.onended = () => {
+      osc.disconnect();
+      gainNode.disconnect();
+    };
   }, []);
 
   const scheduleNextNote = useCallback(() => {
